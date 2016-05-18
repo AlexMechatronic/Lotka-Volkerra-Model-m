@@ -177,26 +177,30 @@ y(t)&=Be^{-dt}
 \end{align}
 
 \section{Sistema del punto critico en $(\frac{d}{c},\frac{a}{b})$}
-El sistema \ref{eq:sisPC2} se puede encontrar una solucion para $x(t)$ y $y(t)$ al aplicar Laplace 
+El sistema \ref{eq:sisPC2} se puede encontrar una solucion para $x(t)$ y $y(t)$ al aplicar Laplace.
+
+Y por lo tanto nuestra solucion estaria dada por 
 \begin{align*}
 \mathcal{L}\left\{ \frac{dx}{dt}\right.
 &=\left. -\frac{bd}{c}y  \right\}
-\\
-\mathcal{L}\left\{ \frac{dy}{dt}\right.
-&= \left.\frac{ac}{b}x  \right\}
 \end{align*}
-
-Y por lo tanto nuestra solucion estaria dada por
-\begin{subequations}
+solucionando se tiene
 \begin{align}
 [sX(s)-X(0)]&=-\frac{bd}{c}Y(s) \nonumber \\
 [X(s)-\frac{X(0)}{s}]&=-\frac{bd}{c}\frac{Y(s)}{s} \nonumber\\
-X(s)+\frac{bd}{c}\frac{Y(s)}{s}&=\frac{X(0)}{s} \label{eq:lapXs} \\
+X(s)+\frac{bd}{c}\frac{Y(s)}{s}&=\frac{X(0)}{s} \label{eq:lapXs}
+\end{align}
+y tambien por 
+\begin{align*}
+\mathcal{L}\left\{ \frac{dy}{dt}\right.
+&= \left.\frac{ac}{b}x  \right\}
+\end{align*}
+lo que nos lleva a
+\begin{align}
 [sY(s)-Y(0)]&=\frac{ac}{b}X(s) \nonumber \\
 [Y(s)-\frac{Y(0)}{s}]&=\frac{ac}{b}\frac{X(s)}{s} \nonumber \\
 -\frac{ac}{b}\frac{X(s)}{s}+Y(s)&=\frac{Y(0)}{s} \label{eq:lapYs}
 \end{align}
-\end{subequations}
 
 Podemos observar que este sistema puede representarse en su forma de matriz y resolverse por algun metodo matricial.
 
@@ -318,96 +322,35 @@ x(t)&=bc^2A\cos(t\sqrt{ad})-\frac{bcdB}{\sqrt{ad}}\sin(t\sqrt{ad})
 \end{align*}
 
 \chapter{Solucion Numerica del modelo}
-Es necesario el concepto de Derivada.
-El valor de la derivada de una función en un punto puede interpretarse geométricamente, ya que se corresponde con la pendiente de la recta tangente a la gráfica de la función en dicho punto. La recta tangente es a su vez la gráfica de la mejor aproximación lineal de la función alrededor de dicho punto.
-Su forma estaría dada por:
-\begin{equation}\label{eq:derivada}
-f'(x)=\lim_{h\to{0}}\frac{f(x+h)-f(x)}{h}
+Se utilizara el metodo de Newton-Rhapson
+
+...
+aqui va info
+...
+\section{Solucion Newton-Raphson}
+primero se tiene un problema de la forma 
+\begin{align*}
+\begin{array}{c}
+\frac{dx}{dt}=f_1(t,x) \\
+\frac{dy}{dt}=f_2(t,y) 
+\end{array}
+\begin{cases}
+x(t_0)=x_0\\
+y(t_0)=y_0
+\end{cases}
+\end{align*}
+a esto se puede aplicar esta formula
+\begin{equation}
+y_{i+1}=y_i+(ak_1+bk_2+ck_3+dk_4)\frac{h}{6}
 \end{equation}
-Al ser $h\to{0}$ serian pasos infinitos y por ende es la aproximación más exacta de la derivada en un punto. Pero en Métodos Numericos es imposible tener pasos infinitos, los cálculos también serian infinitos. Es necesario tener un número de pasos definidos, entre más pasos más exactitud tendría la derivada al ser más pequeños, pero ya no tendría la forma de una recta tangente, ahora seria la recta secante de dos puntos.
-
-Los casos que se han presentado de los problemas se pueden resolver numéricamente, esto es con una aproximación. La exactitud de esta aproximación dependerá del método empleado y de la definición que le queramos dar. Trabajaremos con dos métodos numericos, y verificaremos como realizan su trabajo en diferentes casos de definición para compararlos.\\
-Antes que nada se tiene que escoger un método con el que se va a trabajar para encontrar la solución de la ecuación \ref{eq:EDOsnoLin} del capítulo anterior.
-
-Para cualquiera de los métodos que se usaran (Método de Euler y Método de Euler Mejorado) se tiene primeramente que para diferencias finitas es necesario:
-
-\begin{itemize}
-\item Discretizar el dominio.
-\item Discretizar la función.
-\item Aplicar algún algoritmo de solución.
-\end{itemize}
-
-Y en ecuaciones de primer orden es necesario cumplir con estas condiciones:
-\begin{itemize}
-\item Que $y'=f(x,y)$
-\item Deifinir un intervalo para la solución, este no puede ser infinito para dar con todas las soluciones de una ecuación, los calculos tambien serian infinitos. Para esto es necesario discretizar el dominio.
-\item Necesita condiciones iniciales, esto es para conocer desde donde se empezara a calcular.
-\end{itemize}
-
-\section{Solución Numerica con Diferencias finitas}
-Como se trabajara con el Método de Euler y un derivado de este, Método de Euler Mejorado, se necesita entender que este método es el más simple para resolver un problema de valor inicial.
-\begin{equation*}
-PVI= \left\{ \begin{array}{lr}
-\frac{dy}{dx} = f(x,y) \\
-y(x_0)=y_0 \\
-y(x_i) = ?
-\end{array}\right.
-\end{equation*}
-
-Considere el problema de calcular la pendiente de una curva desconocida que comienza en un punto dado y satisface una cierta ecuación diferencial dada. Se puede pensar en la ecuación diferencial como una fórmula que nos permite calcular la pendiente de la recta tangente a la curva en cualquier punto de la curva, siempre que el punto se conozca.
-La idea es que a pesar de que la curva es desconocida en principio, su punto de comienzo (al cual denotamos por $k_0$) es conocido. Entonces, de la ecuación diferencial se puede computar la pendiente de la curva en el punto $k_0$ y por lo tanto la recta tangente a la curva.
-Ahora, dando un pequeño paso sobre dicha recta, podemos tomarnos un nuevo punto $k_1$ y suponer que dicho punto pertenece a la curva, entonces seguimos el mismo razonamiento aplicado anteriormente y volvemos a calcular la pendiente de la recta tangente a la curva en el punto $k_1$. Luego de varios pasos tendremos formada una curva poligonal $k_0 k_1 k_2 k_3...$ En general esta curva que obtenemos al aplicar el método no diverge lejos de la curva original, además el error entre ambas curvas se puede minimizar si se dan pasos muy pequeños al avanzar sobre la recta tangente a la curva y además el intervalo sobre el que trabajamos es finito (aunque las cosas son más complicadas para ecuaciones inestables).
-
-Este metodo conciste en dividir los intervalos que van de $x_0$ hasta $x_f$ (los denotaremos como $a$ para $x_0$ y $b$ para $x_f$) en $N$ subintervalos de ancho $h$, o sea:
-\begin{equation*}
-h=\frac{b-a}{n}
-\end{equation*}
-Donde $h$ es llamado tambien el diferencial ($\Delta$).
-
-Ahora que entendemos el funcionamiento del método, por la forma de la derivada en la ecuación \ref{eq:derivada} existen diferentes formas de calcular la derivada en un punto.
-
-\begin{itemize}
-\item Backward\\
-Tomando el punto anterior del punto a analizar, osea $k-1$.
-	\begin{equation}
-		\label{eq:derBackward}
-		y'\approx\frac{y_k-y_{k-1}}{h}
-	\end{equation}
-\item Central\\
-Tomando el punto anterior a $k$ que es $k-1$ y el proximo $k+1$.
-	\begin{equation}			   							\label{eq:derCentral}
-		y' \approx \frac{y_{k+1}-y_{k-1}}{2h}
-	\end{equation}
-\item Forward\\
-Tomando el punto mas proximo a $k$, siendo $k+1$
-	\begin{equation}
-		\label{eq:derForward}
-		y'\approx \frac{y_{k+1}-y_k}{h}
-	\end{equation}
-\end{itemize}
-
-Para encontrar un conjunto de soluciones aproximadas es necesario discretizar la ecuacion para trabajar con algún metodo.
-
-\subsection{Metodo de Euler o Explicito}
-Ya que se tiene entendido como funciona primeramente se tiene que reacomodar la ecuación para que se pueda trabajar con ella. 
-%aqui puede ir una informacion del metodo de euler
-%%
-%%esta informacion es obtenida de wikipedia tratar de incluir el link
-Para esto es usada la ecuación \ref{eq:EDOsnoLin} y se discretiza de esta forma utilizando la ecuación \ref{eq:derForward} Forward y la sustituimos en 
-
+donde $k_n$
 \begin{align*}
-X'_k= aX_{k}-bX_{k}Y_{k}  \\
-Y'_k= cX_{k}Y_k-dY_k
+k_1&=f(t_i,y_i) \\
+k_2&=f\left(t_i+\frac{1}{2}h, y_i+\frac{1}{2}k_1h\right)\\
+k_3&=f\left(t_i+\frac{1}{2}h,y_i+\frac{1}{2}k_2h\right) \\
+k_4&=f\left(x_i+h,y_i+k_3h\right)
 \end{align*}
-que quedaria representado asi
-\begin{align*}
-\frac{X_{k+1}-X_k}{h} = aX_{k}-bX_{k}Y_{k}  \\
-\frac{Y_{k+1}-Y_k}{h} = cX_{k}Y_k-dY_k
-\end{align*}
-despejando y acomodando terminos se obtiene
-\begin{align*}
-X_{k+1}=(\frac{1}{h}+a-bY_k)hX_k \\
-Y_{k+1}=(\frac{1}{h}+cX_k-d)hY_k
-\end{align*}
+$t$ es la variable independiente e $y$ es la dependiente y esto mismo puede aplicarse en $x$.
+
 
 \end{document}
